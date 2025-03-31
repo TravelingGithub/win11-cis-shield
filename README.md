@@ -5,3 +5,6 @@
 
 [1.1.3 (L1) Ensure 'Minimum password age' is set to '1 or more day(s)'](https://raw.githubusercontent.com/TravelingGithub/win11-cis-shield/refs/heads/main/1.1.3%20(L1)%20Ensure%20'Minimum%20password%20age'%20is%20set%20to%20'1%20or%20more%20day(s)'.ps1)
 
+[1.1.4 (L1) Ensure 'Minimum password length' is set to '14 or more character(s)'](https://raw.githubusercontent.com/TravelingGithub/win11-cis-shield/refs/heads/main/1.1.4%20(L1)%20Ensure%20'Minimum%20password%20length'%20is%20set%20to%20'14%20or%20more%20character(s)'.ps1)
+
+[1.1.5 (L1) Ensure 'Password must meet complexity requirements' is set to 'Enabled']()
