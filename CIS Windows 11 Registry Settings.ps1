@@ -1,72 +1,17 @@
-# CIS Windows 11 Enterprise Benchmark v3.0.0 Registry Settings
-
-# 18.1.1.1 Prevent enabling lock screen camera
-New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Name "NoLockScreenCamera" -Value 1 -Type DWord
+# PowerShell Script to Apply CIS Benchmark Registry Settings
+# NOTE: This script attempts to configure settings based on the extracted list.
+#       Review and test thoroughly before applying in a production environment.
+#       Some settings might require a reboot to take effect.
+#       HKU entries are mapped to HKCU (CurrentUser) - this will only affect the user running the script.
+#       For system-wide user settings, consider Group Policy User Configuration or modifying the Default User profile registry hive.
 
 # 18.1.1.2 Prevent enabling lock screen slide show
-New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Personalization" -Name "NoLockScreenSlideshow" -Value 1 -Type DWord
+New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name "NoLockScreenSlideshow" -Value 1 -Type DWord
 
-# 18.1.2.2 Allow users to enable online speech recognition services
-New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\InputPersonalization" -Name "AllowInputPersonalization" -Value 0 -Type DWord
-
-# 18.4.1 Apply UAC restrictions to local accounts on network logons
-New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "LocalAccountTokenFilterPolicy" -Value 0 -Type DWord
-
-# 18.4.2 Configure RPC packet level privacy setting for incoming connections
-New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Print" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Print" -Name "RpcAuthnLevelPrivacyEnabled" -Value 1 -Type DWord
-
-# 18.4.3 Configure SMB v1 client driver
-New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\mrxsmb10" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\mrxsmb10" -Name "Start" -Value 4 -Type DWord
-
-# 18.4.4 Configure SMB v1 server
-New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -Name "SMB1" -Value 0 -Type DWord
-
-# 18.4.5 Enable Certificate Padding
-New-Item -Path "HKLM:\Software\Microsoft\Cryptography\Wintrust\Config" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\Cryptography\Wintrust\Config" -Name "EnableCertPaddingCheck" -Value 1 -Type DWord
-
-# 18.4.6 Enable Structured Exception Handling Overwrite Protection (SEHOP)
-New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\kernel" -Name "DisableExceptionChainValidation" -Value 0 -Type DWord
-
-# 18.4.7 NetBT NodeType configuration
-New-Item -Path "HKLM:\System\CurrentControlSet\Services\NetBT\Parameters" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\NetBT\Parameters" -Name "NodeType" -Value 2 -Type DWord
-
-# 18.10.3.2 Prevent non-admin users from installing packaged Windows apps
-New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Appx" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Appx" -Name "BlockNonAdminUserInstall" -Value 1 -Type DWord
-
-# 18.10.4.1 Let Windows apps activate with voice while the system is locked
-New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\AppPrivacy" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\AppPrivacy" -Name "LetAppsActivateWithVoiceAboveLock" -Value 2 -Type DWord
-
-# 18.10.5.1 Allow Microsoft accounts to be optional
-New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "MSAOptional" -Value 1 -Type DWord
-
-# 18.10.7.1 Disallow Autoplay for non-volume devices
-New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Explorer" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Explorer" -Name "NoAutoplayfornonVolume" -Value 1 -Type DWord
-
-# 18.10.7.2 Set the default behavior for AutoRun
-New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoAutorun" -Value 1 -Type DWord
-
-# 18.10.7.3 Turn off Autoplay
-New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Value 255 -Type DWord
-
-# 18.10.8.1.1 Configure enhanced anti-spoofing
-New-Item -Path "HKLM:\Software\Policies\Microsoft\Biometrics\FacialFeatures" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Biometrics\FacialFeatures" -Name "EnhancedAntiSpoofing" -Value 1 -Type DWord
+# 1.1.6 Relax minimum password length limits
+New-Item -Path "HKLM:\System\CurrentControlSet\Control\SAM" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\SAM" -Name "RelaxMinimumPasswordLengthLimits" -Value 1 -Type DWord
 
 # 18.10.12.1 Turn off cloud consumer account state content
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" -Force -ErrorAction SilentlyContinue | Out-Null
@@ -76,7 +21,7 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" 
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -Value 1 -Type DWord
 
-# 18.10.13.1 Require pin for pairing
+# 18.10.13.1 Require pin for pairing (Setting to 'First Time' as one compliant option)
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Connect" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Connect" -Name "RequirePinForPairing" -Value 1 -Type DWord
 
@@ -85,16 +30,16 @@ New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\CredUI" -Force -ErrorA
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\CredUI" -Name "DisablePasswordReveal" -Value 1 -Type DWord
 
 # 18.10.14.2 Enumerate administrator accounts on elevation
-New-Item -Path "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\CredUI" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\CredUI" -Name "EnumerateAdministrators" -Value 0 -Type DWord
+New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\CredUI" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\CredUI" -Name "EnumerateAdministrators" -Value 0 -Type DWord
 
 # 18.10.14.3 Prevent the use of security questions for local accounts
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\System" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\System" -Name "NoLocalPasswordResetQuestions" -Value 1 -Type DWord
 
-# 18.10.15.1 Allow Diagnostic Data
+# 18.10.15.1 Allow Diagnostic Data (Setting to 'Send required' as one compliant option)
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\DataCollection" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 0 -Type DWord
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Value 1 -Type DWord
 
 # 18.10.15.3 Disable OneSettings Downloads
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\DataCollection" -Force -ErrorAction SilentlyContinue | Out-Null
@@ -120,7 +65,7 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\DataCollection
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\PreviewBuilds" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\PreviewBuilds" -Name "AllowBuildPreview" -Value 0 -Type DWord
 
-# 18.10.16.1 Download Mode
+# 18.10.16.1 Download Mode (Setting to 'LAN (1)' as one compliant option NOT Internet (3))
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\DeliveryOptimization" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\DeliveryOptimization" -Name "DODownloadMode" -Value 1 -Type DWord
 
@@ -142,33 +87,33 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\AppInstaller" 
 
 # 18.10.25.1.1 Application: Control Event Log behavior when the log file reaches its maximum size
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application" -Name "Retention" -Value 0 -Type String
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application" -Name "Retention" -Value "0" -Type String # Note: Value is string "0" for Disabled
 
-# 18.10.25.1.2 Application: Specify the maximum log file size (KB)
+# 18.10.25.1.2 Application: Specify the maximum log file size (KB) (Setting to minimum compliant 32768)
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Application" -Name "MaxSize" -Value 32768 -Type DWord
 
 # 18.10.25.2.1 Security: Control Event Log behavior when the log file reaches its maximum size
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security" -Name "Retention" -Value 0 -Type String
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security" -Name "Retention" -Value "0" -Type String # Note: Value is string "0" for Disabled
 
-# 18.10.25.2.2 Security: Specify the maximum log file size (KB)
+# 18.10.25.2.2 Security: Specify the maximum log file size (KB) (Setting to minimum compliant 196608)
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Security" -Name "MaxSize" -Value 196608 -Type DWord
 
 # 18.10.25.3.1 Setup: Control Event Log behavior when the log file reaches its maximum size
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Setup" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Setup" -Name "Retention" -Value 0 -Type String
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Setup" -Name "Retention" -Value "0" -Type String # Note: Value is string "0" for Disabled
 
-# 18.10.25.3.2 Setup: Specify the maximum log file size (KB)
+# 18.10.25.3.2 Setup: Specify the maximum log file size (KB) (Setting to minimum compliant 32768)
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Setup" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\Setup" -Name "MaxSize" -Value 32768 -Type DWord
 
 # 18.10.25.4.1 System: Control Event Log behavior when the log file reaches its maximum size
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\System" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\System" -Name "Retention" -Value 0 -Type String
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\System" -Name "Retention" -Value "0" -Type String # Note: Value is string "0" for Disabled
 
-# 18.10.25.4.2 System: Specify the maximum log file size (KB)
+# 18.10.25.4.2 System: Specify the maximum log file size (KB) (Setting to minimum compliant 32768)
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\System" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\EventLog\System" -Name "MaxSize" -Value 32768 -Type DWord
 
@@ -181,8 +126,16 @@ New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Explorer" -Force -Erro
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Explorer" -Name "NoHeapTerminationOnCorruption" -Value 0 -Type DWord
 
 # 18.10.28.5 Turn off shell protocol protected mode
-New-Item -Path "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "PreXPSP2ShellProtocolBehavior" -Value 0 -Type DWord
+New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "PreXPSP2ShellProtocolBehavior" -Value 0 -Type DWord
+
+# 18.10.3.2 Prevent non-admin users from installing packaged Windows apps
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Appx" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Appx" -Name "BlockNonAdminUserInstall" -Value 1 -Type DWord
+
+# 18.10.4.1 Let Windows apps activate with voice while the system is locked
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\AppPrivacy" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\AppPrivacy" -Name "LetAppsActivateWithVoiceAboveLock" -Value 2 -Type DWord
 
 # 18.10.41.1 Block all consumer Microsoft account user authentication
 New-Item -Path "HKLM:\Software\Policies\Microsoft\MicrosoftAccount" -Force -ErrorAction SilentlyContinue | Out-Null
@@ -232,6 +185,47 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Spyne
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR" -Name "ExploitGuard_ASR_Rules" -Value 1 -Type DWord
 
+# 18.10.42.6.1.2 Configure Attack Surface Reduction rules: Set the state for each ASR rule
+# Block Office communication application from creating child processes
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "26190899-1602-49e8-8b27-eb1d0a1ce869" -Value 1 -Type DWord
+# Block Office applications from creating executable content
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "3b576869-a4ec-4529-8536-b80a7769e899" -Value 1 -Type DWord
+# Block abuse of exploited vulnerable signed drivers
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "56a863a9-875e-4185-98a7-b882c64b5ce5" -Value 1 -Type DWord
+# Block execution of potentially obfuscated scripts
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "5beb7efe-fd9a-4556-801d-275e5ffc04cc" -Value 1 -Type DWord
+# Block Office applications from injecting code into other processes
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "75668c1f-73b5-4cf0-bb93-3ecf5cb7cc84" -Value 1 -Type DWord
+# Block Adobe Reader from creating child processes
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c" -Value 1 -Type DWord
+# Block Win32 API calls from Office macro
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b" -Value 1 -Type DWord
+# Block credential stealing from the Windows local security authority subsystem (lsass.exe)
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "9e6c4e1f-7d60-472f-ba1a-a39ef669e4b2" -Value 1 -Type DWord
+# Block untrusted and unsigned processes that run from USB
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4" -Value 1 -Type DWord
+# Block executable content from email client and webmail
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "be9ba2d9-53ea-4cdc-84e5-9b1eeee46550" -Value 1 -Type DWord
+# Block JavaScript or VBScript from launching downloaded executable content
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "d3e037e1-3eb8-44c8-a917-57927947596d" -Value 1 -Type DWord
+# Block Office applications from creating child processes
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "d4f940ab-401b-4efc-aadc-ad5f3c50688a" -Value 1 -Type DWord
+# Block persistence through WMI event subscription
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\ASR\Rules" -Name "e6db77e5-3df2-4cf1-b95a-636979351e5b" -Value 1 -Type DWord
+
 # 18.10.42.6.3.1 Prevent users and apps from accessing dangerous websites
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Windows Defender Exploit Guard\Network Protection" -Name "EnableNetworkProtection" -Value 1 -Type DWord
@@ -268,6 +262,10 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\AppHVSI" -Name "AllowA
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\OneDrive" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Value 1 -Type DWord
 
+# 18.10.5.1 Allow Microsoft accounts to be optional
+New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "MSAOptional" -Value 1 -Type DWord
+
 # 18.10.56.2.3 Do not allow passwords to be saved
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services" -Force -ErrorAction SilentlyContinue | Out-Null
 Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services" -Name "DisablePasswordSaving" -Value 1 -Type DWord
@@ -298,4 +296,85 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Se
 
 # 18.10.56.3.9.5 Set client connection encryption level
 New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services" -Force -ErrorAction SilentlyContinue | Out-Null
-Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services" -Name "MinEncryptionLevel" -Value 3
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services" -Name "MinEncryptionLevel" -Value 3 -Type DWord
+
+# 18.10.57.1 Prevent downloading of enclosures
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Internet Explorer\Feeds" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Internet Explorer\Feeds" -Name "DisableEnclosureDownload" -Value 1 -Type DWord
+
+# 18.10.58.3 Allow Cortana
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" -Name "AllowCortana" -Value 0 -Type DWord
+
+# 18.10.58.4 Allow Cortana above lock screen
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" -Name "AllowCortanaAboveLock" -Value 0 -Type DWord
+
+# 18.10.58.5 Allow indexing of encrypted files
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" -Name "AllowIndexingEncryptedStoresOrItems" -Value 0 -Type DWord
+
+# 18.10.58.6 Allow search and Cortana to use location
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Windows Search" -Name "AllowSearchToUseLocation" -Value 0 -Type DWord
+
+# 18.10.65.2 Only display the private store within the Microsoft Store
+New-Item -Path "HKLM:\Software\Policies\Microsoft\WindowsStore" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\WindowsStore" -Name "RequirePrivateStoreOnly" -Value 1 -Type DWord
+
+# 18.10.65.3 Turn off Automatic Download and Install of updates
+New-Item -Path "HKLM:\Software\Policies\Microsoft\WindowsStore" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\WindowsStore" -Name "AutoDownload" -Value 4 -Type DWord
+
+# 18.10.65.4 Turn off the offer to update to the latest version of Windows
+New-Item -Path "HKLM:\Software\Policies\Microsoft\WindowsStore" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\WindowsStore" -Name "DisableOSUpgrade" -Value 1 -Type DWord
+
+# 18.10.7.1 Disallow Autoplay for non-volume devices
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Explorer" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Explorer" -Name "NoAutoplayfornonVolume" -Value 1 -Type DWord
+
+# 18.10.71.1 Allow widgets
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Dsh" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Dsh" -Name "AllowNewsAndInterests" -Value 0 -Type DWord
+
+# 18.10.7.2 Set the default behavior for AutoRun
+New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoAutorun" -Value 1 -Type DWord
+
+# 18.10.7.3 Turn off Autoplay
+New-Item -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name "NoDriveTypeAutoRun" -Value 255 -Type DWord
+
+# 18.10.75.1.1 Automatic Data Collection
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Name "CaptureThreatWindow" -Value 1 -Type DWord
+
+# 18.10.75.1.2 Notify Malicious
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Name "NotifyMalicious" -Value 1 -Type DWord
+
+# 18.10.75.1.3 Notify Password Reuse
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Name "NotifyPasswordReuse" -Value 1 -Type DWord
+
+# 18.10.75.1.4 Notify Unsafe App
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Name "NotifyUnsafeApp" -Value 1 -Type DWord
+
+# 18.10.75.1.5 Service Enabled
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\WTDS\Components" -Name "ServiceEnabled" -Value 1 -Type DWord
+
+# 18.10.75.2.1 Configure Windows Defender SmartScreen (Explorer)
+New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "ShellSmartScreenLevel" -Value "Block" -Type String
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\System" -Name "EnableSmartScreen" -Value 1 -Type DWord
+
+# 18.10.77.1 Enables or disables Windows Game Recording and Broadcasting
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\GameDVR" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\GameDVR" -Name "AllowGameDVR" -Value 0 -Type DWord
+
+# 18.10.78.1 Enable ESS with Supported Peripherals
+New-Item -Path "HKLM:\Software\Microsoft\Policies\PassportForWork\Biometrics" -Force -ErrorAction SilentlyContinue | Out-Null
+Set-ItemProperty -Path "HKLM:\Software\Microsoft\Policies\PassportForWork\Biometrics" -Name "EnableESSwithSupportedPeripherals" -Value 1 -Type DWord
