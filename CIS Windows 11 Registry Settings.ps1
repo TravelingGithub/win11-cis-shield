@@ -2,7 +2,6 @@
 # NOTE: This script attempts to configure settings based on the extracted list.
 #       Review and test thoroughly before applying in a production environment.
 #       Some settings might require a reboot to take effect.
-#       HKU entries are mapped to HKCU (CurrentUser) - this will only affect the user running the script.
 #       For system-wide user settings, consider Group Policy User Configuration or modifying the Default User profile registry hive.
 
 # 18.1.1.2 Prevent enabling lock screen slide show

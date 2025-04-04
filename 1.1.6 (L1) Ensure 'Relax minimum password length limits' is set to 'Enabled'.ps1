@@ -1,6 +1,9 @@
 #NOTE: Key may not exist in secpol.msc local.sdb till setting is first enabled. (unconfirmed) 
 #Making sure Registry Key and value is set looks like best approach. 
 
+New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\SAM"  -ErrorAction SilentlyContinue | Out-Null
+
+
 # Add Registry Key
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\SAM" -Name "RelaxMinimumPasswordLengthLimits" -Value 1 -PropertyType DWORD -Force
 
