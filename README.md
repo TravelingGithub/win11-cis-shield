@@ -9,4 +9,7 @@
 
 [1.1.5 (L1) Ensure 'Password must meet complexity requirements' is set to 'Enabled'](https://raw.githubusercontent.com/TravelingGithub/win11-cis-shield/refs/heads/main/1.1.5%20(L1)%20Ensure%20'Password%20must%20meet%20complexity%20requirements'%20is%20set%20to%20'Enabled'.ps1)
 
-[1.1.6 (L1) Ensure 'Relax minimum password length limits' is set to 'Enabled']()
+[1.1.6 (L1) Ensure 'Relax minimum password length limits' is set to 'Enabled'](https://raw.githubusercontent.com/TravelingGithub/win11-cis-shield/refs/heads/main/1.1.6%20(L1)%20Ensure%20'Relax%20minimum%20password%20length%20limits'%20is%20set%20to%20'Enabled'.ps1)
+
+[CIS Benchmark Registry Settings](https://raw.githubusercontent.com/TravelingGithub/win11-cis-shield/refs/heads/main/CIS%20Windows%2011%20Registry%20Settings.ps1)
+
